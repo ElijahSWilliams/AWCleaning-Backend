@@ -2,9 +2,10 @@ import Groq from "groq-sdk";
 import dotenv from "dotenv"; //load environment variables from .env file
 import cors from "cors"; //install cirs using npm install cors
 import express from "express"; //install express using npm install express
-const port = 3000; //set the port number
-const app = express(); //initialize express
 dotenv.config(); //set up env file config  
+
+const port = process.env.PORT || 3000; //set the port number
+const app = express(); //initialize express
 
 /* List of Services */
 const services = [
@@ -28,7 +29,8 @@ const ai = new Groq({
 //middleware
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", 
+      "https://elijahswilliams.github.io"],
     methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type"],
   }),
@@ -39,7 +41,7 @@ app.use(express.json()); //parse JSON bodies
 //routes 
 //test route
 app.get("/", (req, res) => {
-  res.send("Hello World!", ); //send a response to the client  
+  res.send("AW AI Backend is running"); //send a response to the client  
 });
 
 //Chat API route
@@ -94,6 +96,6 @@ app.post("/chat", async (req, res) => {
 
 //start the server
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`); //log a message when the server starts
+  console.log(`Server is running on port ${port}`); //log a message when the server starts
 });
 
